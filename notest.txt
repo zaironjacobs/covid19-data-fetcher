@@ -1,0 +1,2 @@
+CRONTAB RUN DATA FETCHER: "At minute 0 and 30."
+0,30 * * * * cd ~/covid19-python-data-fetcher && /usr/local/bin/pipenv run python run_data_fetcher.py
