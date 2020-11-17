@@ -14,7 +14,7 @@ $ git clone https://github.com/zaironjacobs/covid19-python-data-fetcher
 
 Make sure you have MongoDB installed on your system before running the script.
 
-Copy the file .env.example to .env and a database name and a collection name to the environment variables.
+Copy the file .env.example to .env and add a database name and collection name to the environment variables.
 
 To use:
 ```console
