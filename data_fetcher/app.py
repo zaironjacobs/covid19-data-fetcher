@@ -71,18 +71,20 @@ class App:
         else:
             shutil.rmtree(constants.data_dir)
 
-        for num in range(0, 5):
+        tries = 30
+        for num in range(0, tries):
             date_time = datetime.now() - timedelta(num)
             self.__date_time_string = datetime.strftime(date_time, '%m-%d-%Y')
             try:
                 file_name = download(constants.csse_covid_19_daily_reports_url, self.__date_time_string)
                 self.__csv_file_name = file_name
+                print('Download completed: ' + file_name)
             except (OSError, HTTPError, RequestException):
                 pass
             else:
                 break
         else:
-            print('Process exited without downloading any data')
+            print('Download failed: Unable to find the latest csv file for the last ' + str(tries) + ' days')
             sys.exit(0)
 
     def _get_country_names_list(self):
