@@ -1,6 +1,5 @@
 from pymongo import MongoClient
-
-from . import constants
+from decouple import config
 
 
 class MongoDB:
@@ -9,9 +8,9 @@ class MongoDB:
     """
 
     def __init__(self):
-        self.__cluster = MongoClient()
-        self.__database = self.__cluster[constants.database]
-        self.__collection = self.__database[constants.collection]
+        self.__cluster = MongoClient(config('CONNECTION_STRING'))
+        self.__database = self.__cluster[config('DATABASE')]
+        self.__collection = self.__database[config('COLLECTION')]
 
     def insert(self, data):
         """

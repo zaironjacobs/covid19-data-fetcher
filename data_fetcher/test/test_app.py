@@ -2,11 +2,15 @@ import os
 
 import pytest
 from pymongo import MongoClient
+from decouple import config
 
 from ..app import App
-from .. import constants
 from .. import country_db_fields as fields
 from .. import helper
+
+cluster = MongoClient(config('CONNECTION_STRING'))
+database = cluster[config('DATABASE')]
+collection = database[config('COLLECTION')]
 
 
 class TestApp:
@@ -35,10 +39,6 @@ class TestApp:
         test_app._populate_country_objects()
         test_app._save_data_to_db()
 
-        cluster = MongoClient()
-        database = cluster[constants.database]
-        collection = database[constants.collection]
-
         country = 'Netherlands'
         country_data = (collection.find_one({fields.name(): country}))
 
@@ -60,10 +60,6 @@ class TestApp:
         test_app._create_country_objects()
         test_app._populate_country_objects()
         test_app._save_data_to_db()
-
-        cluster = MongoClient()
-        database = cluster[constants.database]
-        collection = database[constants.collection]
 
         country = 'Netherlands'
         country_data = (collection.find_one({fields.name(): country}))
@@ -87,10 +83,6 @@ class TestApp:
         test_app._populate_country_objects()
         test_app._save_data_to_db()
 
-        cluster = MongoClient()
-        database = cluster[constants.database]
-        collection = database[constants.collection]
-
         country = 'Netherlands'
         country_data = (collection.find_one({fields.name(): country}))
 
@@ -113,10 +105,6 @@ class TestApp:
         test_app._populate_country_objects()
         test_app._save_data_to_db()
 
-        cluster = MongoClient()
-        database = cluster[constants.database]
-        collection = database[constants.collection]
-
         country = 'Netherlands'
         country_data = (collection.find_one({fields.name(): country}))
 
@@ -136,5 +124,4 @@ class TestApp:
             for rm_file in files:
                 os.remove(os.path.join(root, rm_file))
 
-        cluster = MongoClient()
-        cluster.drop_database(constants.database)
+        cluster.drop_database(database)

@@ -28,7 +28,3 @@ def recovered():
 
 def last_updated_by_source_at():
     return 'last_updated_by_source_at'
-
-
-def owner_id():
-    return 'owner_id'

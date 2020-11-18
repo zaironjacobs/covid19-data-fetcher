@@ -13,7 +13,6 @@ class Country:
         self.__active = 0
         self.__recovered = 0
         self.__last_updated_by_source_at = None
-        self.__owner_id = 1
 
     def increment_confirmed(self, confirmed):
         self.__confirmed += confirmed
@@ -31,8 +30,7 @@ class Country:
         return {fields.name(): self.__name, fields.confirmed(): self.__confirmed,
                 fields.deaths(): self.__deaths, fields.active(): self.__active,
                 fields.recovered(): self.__recovered,
-                fields.last_updated_by_source_at(): self.__last_updated_by_source_at,
-                fields.owner_id(): self.__owner_id}
+                fields.last_updated_by_source_at(): self.__last_updated_by_source_at}
 
     @property
     def name(self):
@@ -65,7 +63,3 @@ class Country:
     @last_updated_by_source_at.setter
     def last_updated_by_source_at(self, last_updated_by_source_at):
         self.__last_updated_by_source_at = last_updated_by_source_at
-
-    @property
-    def owner_id(self):
-        return self.__owner_id

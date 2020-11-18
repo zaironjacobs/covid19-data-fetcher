@@ -1,9 +1,23 @@
 COVID-19 Data Fetcher
 =================
 
-Fetch and save data of each country to a local MongoDB database. 
+Fetch and save data of each country to a MongoDB database. 
 
-Data will be fetched from: https://github.com/CSSEGISandData/COVID-19
+Source of data: https://github.com/CSSEGISandData/COVID-19
+
+An example of a document:
+
+```yaml
+{
+	"_id" : ObjectId("5fb4e9917a572a64d671bdb7"),
+	"name" : "Netherlands",
+	"confirmed" : 464205,
+	"deaths" : 8689,
+	"active" : 449005,
+	"recovered" : 6511,
+	"last_updated_by_source_at" : ISODate("2020-11-18T05:50:49Z")
+}
+```
 
 ## Download
 ```console
@@ -12,13 +26,11 @@ $ git clone https://github.com/zaironjacobs/covid19-python-data-fetcher
 
 ## Usage
 
-Make sure you have MongoDB installed on your system before running the script.
-
-Copy the file .env.example to .env and add a database name and collection name to the environment variables.
+Copy the file .env.example to .env and fill in the environment variables.
 
 To use:
 ```console
 $ cd covid19-python-data-fetcher
-$ pipenv install --dev
-$ pipenv run python run_data_fetcher.py
+$ pipenv install
+$ pipenv run python run.py
 ```

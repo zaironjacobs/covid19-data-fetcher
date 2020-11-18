@@ -3,6 +3,7 @@ import sys
 import shutil
 from datetime import datetime, timedelta
 
+from decouple import config
 import pandas as pd
 import requests
 from requests.exceptions import RequestException
@@ -169,7 +170,7 @@ class App:
         Save each country object to a local MongoDB database
         """
 
-        self.__mongodb.drop_collection(constants.collection)
+        self.__mongodb.drop_collection(config('COLLECTION'))
         for country in self.__country_objects_list:
             self.__mongodb.insert(country.to_dict())
 

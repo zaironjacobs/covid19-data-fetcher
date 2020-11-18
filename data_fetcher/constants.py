@@ -6,9 +6,6 @@ csse_covid_19_daily_reports_url = 'https://raw.githubusercontent.com/CSSEGISandD
 github_api_csse_covid_19_daily_reports = 'https://api.github.com/repos/CSSEGISandData/COVID-19/commits?path=' \
                                          'csse_covid_19_data%2Fcsse_covid_19_daily_reports%2F{}.csv'
 
-database = config('DATABASE')
-collection = config('COLLECTION')
-
 data_dir = 'data_fetcher/data/'
 
 worldwide = 'Worldwide'
