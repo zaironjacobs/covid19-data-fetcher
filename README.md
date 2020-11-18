@@ -7,7 +7,7 @@ Source of data: https://github.com/CSSEGISandData/COVID-19
 
 An example of a document:
 
-```yaml
+```javascript
 {
 	"_id" : ObjectId("5fb4e9917a572a64d671bdb7"),
 	"name" : "Netherlands",
