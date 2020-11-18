@@ -12,7 +12,6 @@ from requests.exceptions import HTTPError
 from .country import Country
 from . import constants
 from .mongodb import MongoDB
-from . import helper
 from . import retriever
 
 
@@ -25,7 +24,7 @@ class App:
         self.__date_time_string = ''
         self.__csv_file_name = ''
 
-        self.__country_objects_list = []
+        self.__country_objects_dict = {}
 
         self.__total_confirmed = 0
         self.__total_deaths = 0
@@ -41,9 +40,7 @@ class App:
 
         print('Downloading data...')
         self._download_csv_file()
-
-        print('Cleaning data...')
-        helper.clean_data(self.__csv_file_name)
+        self._fix_data()
 
         print('Saving data to database...')
         self._create_country_objects()
@@ -118,45 +115,45 @@ class App:
             country = Country()
             country.name = country_name
             country.last_updated_by_source_at = last_updated_by_source_at
-            self.__country_objects_list.append(country)
+            self.__country_objects_dict.update({country.name: country})
 
     def _populate_country_objects(self):
         """
         Populate all country objects with data retrieved from the csv file
         """
 
-        for country in self.__country_objects_list:
+        df = pd.read_csv(constants.data_dir + self.__csv_file_name)
+        row_count = len(df.index)
+        for count in range(row_count):
+            country_name = df.at[count, constants.country_region_column]
 
-            df = pd.read_csv(constants.data_dir + self.__csv_file_name)
-            row_count = len(df.index)
-            for count in range(row_count):
-                country_name = df.at[count, constants.country_region_column]
-                if country.name == country_name:
-                    try:
-                        deaths = int(df.at[count, constants.deaths_column])
-                        country.increment_deaths(deaths)
-                        self.__total_deaths += deaths
+            try:
+                deaths = int(df.at[count, constants.deaths_column])
+                recovered = int(df.at[count, constants.recovered_column])
+                active = int(df.at[count, constants.active_column])
+                confirmed = int(df.at[count, constants.confirmed_column])
+            except ValueError as err:
+                print('Value error: ' + str(err))
+            else:
+                country = self.__country_objects_dict.get(country_name)
 
-                        recovered = int(df.at[count, constants.recovered_column])
-                        country.increment_recovered(recovered)
-                        self.__total_recovered += recovered
+                country.increment_deaths(deaths)
+                self.__total_deaths += deaths
 
-                        active = int(df.at[count, constants.active_column])
-                        country.increment_active(active)
-                        self.__total_active += active
+                country.increment_recovered(recovered)
+                self.__total_recovered += recovered
 
-                        confirmed = int(df.at[count, constants.confirmed_column])
-                        country.increment_confirmed(confirmed)
-                        self.__total_confirmed += confirmed
-                    except ValueError as err:
-                        print('Value error: ' + str(err))
+                country.increment_active(active)
+                self.__total_active += active
 
-        for country in self.__country_objects_list:
-            if country.name == constants.worldwide:
-                country.increment_deaths(self.__total_deaths)
-                country.increment_recovered(self.__total_recovered)
-                country.increment_active(self.__total_active)
-                country.increment_confirmed(self.__total_confirmed)
+                country.increment_confirmed(confirmed)
+                self.__total_confirmed += confirmed
+
+        country_worldwide = self.__country_objects_dict.get(constants.worldwide)
+        country_worldwide.increment_deaths(self.__total_deaths)
+        country_worldwide.increment_recovered(self.__total_recovered)
+        country_worldwide.increment_active(self.__total_active)
+        country_worldwide.increment_confirmed(self.__total_confirmed)
 
     def _get_last_updated_time(self):
         """
@@ -173,8 +170,24 @@ class App:
         """
 
         self.__mongodb.drop_collection(config('COLLECTION'))
-        for country in self.__country_objects_list:
-            self.__mongodb.insert(country.to_dict())
+        for key, value in self.__country_objects_dict.items():
+            self.__mongodb.insert(value.to_dict())
+
+    def _fix_data(self):
+        """
+        Convert negative numbers to positive numbers
+        """
+
+        df = pd.read_csv(constants.data_dir + self.__csv_file_name)
+
+        # Remove all .0
+        df.fillna(0, inplace=True, downcast='infer')
+
+        # Convert all negative numbers to positive numbers
+        for column in constants.cases_columns:
+            df[column] = df[column].abs()
+
+        df.to_csv(constants.data_dir + self.__csv_file_name, index=False)
 
     @property
     def csv_file_name(self):

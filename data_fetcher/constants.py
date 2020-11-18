@@ -18,5 +18,3 @@ recovered_column = 'Recovered'
 active_column = 'Active'
 
 cases_columns = [confirmed_column, deaths_column, recovered_column, active_column]
-unwanted_columns = ['FIPS', 'Admin2', 'Province_State', 'Last_Update', 'Lat', 'Long_',
-                    'Combined_Key', 'Incident_Rate', 'Case_Fatality_Ratio']
