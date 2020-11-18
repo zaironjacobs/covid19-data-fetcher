@@ -10,11 +10,8 @@ data_dir = 'data_fetcher/data/'
 
 worldwide = 'Worldwide'
 
-province_state_column = 'Province_State'
 country_region_column = 'Country_Region'
 deaths_column = 'Deaths'
 confirmed_column = 'Confirmed'
 recovered_column = 'Recovered'
 active_column = 'Active'
-
-cases_columns = [confirmed_column, deaths_column, recovered_column, active_column]

@@ -178,13 +178,16 @@ class App:
         Convert negative numbers to positive numbers
         """
 
+        cases_columns = [constants.confirmed_column, constants.deaths_column,
+                         constants.recovered_column, constants.active_column]
+
         df = pd.read_csv(constants.data_dir + self.__csv_file_name)
 
         # Remove all .0
         df.fillna(0, inplace=True, downcast='infer')
 
         # Convert all negative numbers to positive numbers
-        for column in constants.cases_columns:
+        for column in cases_columns:
             df[column] = df[column].abs()
 
         df.to_csv(constants.data_dir + self.__csv_file_name, index=False)
