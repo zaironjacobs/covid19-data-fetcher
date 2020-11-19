@@ -17,7 +17,7 @@ from . import retriever
 
 class App:
     """
-    Save data from the downloaded csv file inside the data dir to a local MongoDB database
+    Save data from the downloaded csv file inside the data dir to a MongoDB database
     """
 
     def __init__(self):
@@ -180,7 +180,7 @@ class App:
 
     def _save_data_to_db(self):
         """
-        Save each country object to a local MongoDB database
+        Save each country object to a MongoDB database
         """
 
         self.__mongodb.drop_collection(config('COLLECTION'))
