@@ -40,7 +40,6 @@ class App:
 
         print('Downloading data...')
         self._download_csv_file()
-        self._fix_data()
 
         print('Saving data to database...')
         self._create_country_objects()
@@ -123,15 +122,30 @@ class App:
         """
 
         df = pd.read_csv(constants.data_dir + self.__csv_file_name)
+
+        # Remove all ".0" from numbers
+        df.fillna(0, inplace=True, downcast='infer')
+
         row_count = len(df.index)
         for count in range(row_count):
             country_name = df.at[count, constants.country_region_column]
 
             try:
                 deaths = int(df.at[count, constants.deaths_column])
+                if deaths < 0:
+                    deaths = abs(deaths)
+
                 recovered = int(df.at[count, constants.recovered_column])
+                if recovered < 0:
+                    recovered = abs(recovered)
+
                 active = int(df.at[count, constants.active_column])
+                if active < 0:
+                    active = abs(active)
+
                 confirmed = int(df.at[count, constants.confirmed_column])
+                if confirmed < 0:
+                    confirmed = abs(confirmed)
             except ValueError as err:
                 print('Value error: ' + str(err))
             else:
@@ -172,25 +186,6 @@ class App:
         self.__mongodb.drop_collection(config('COLLECTION'))
         for key, value in self.__country_objects_dict.items():
             self.__mongodb.insert(value.to_dict())
-
-    def _fix_data(self):
-        """
-        Convert negative numbers to positive numbers
-        """
-
-        cases_columns = [constants.confirmed_column, constants.deaths_column,
-                         constants.recovered_column, constants.active_column]
-
-        df = pd.read_csv(constants.data_dir + self.__csv_file_name)
-
-        # Remove all .0
-        df.fillna(0, inplace=True, downcast='infer')
-
-        # Convert all negative numbers to positive numbers
-        for column in cases_columns:
-            df[column] = df[column].abs()
-
-        df.to_csv(constants.data_dir + self.__csv_file_name, index=False)
 
     @property
     def csv_file_name(self):
