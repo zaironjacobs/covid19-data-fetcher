@@ -31,7 +31,6 @@ class TestApp:
     def test_data_confirmed_is_saved(self):
         test_app = App()
         test_app._download_csv_file()
-        test_app._fix_data()
 
         test_app._create_country_objects()
         test_app._populate_country_objects()
@@ -52,7 +51,6 @@ class TestApp:
     def test_data_deaths_is_saved(self):
         test_app = App()
         test_app._download_csv_file()
-        test_app._fix_data()
 
         test_app._create_country_objects()
         test_app._populate_country_objects()
@@ -73,7 +71,6 @@ class TestApp:
     def test_data_active_is_saved(self):
         test_app = App()
         test_app._download_csv_file()
-        test_app._fix_data()
 
         test_app._create_country_objects()
         test_app._populate_country_objects()
@@ -94,7 +91,6 @@ class TestApp:
     def test_data_recovered_is_saved(self):
         test_app = App()
         test_app._download_csv_file()
-        test_app._fix_data()
 
         test_app._create_country_objects()
         test_app._populate_country_objects()
