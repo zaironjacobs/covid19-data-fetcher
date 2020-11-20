@@ -19,6 +19,9 @@ An example of a document:
 }
 ```
 
+## Dependencies
+- Python >= 3.8
+
 ## Download
 ```console
 $ git clone https://github.com/zaironjacobs/covid19-python-data-fetcher
