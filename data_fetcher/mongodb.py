@@ -21,7 +21,7 @@ class MongoDB:
 
     def drop_collection(self, collection_name):
         """
-        Drop a collection from the MongoDB database
+        Drop the collection from the MongoDB database
         """
 
         self.__database.drop_collection(collection_name)

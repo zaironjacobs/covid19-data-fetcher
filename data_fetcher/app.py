@@ -173,7 +173,7 @@ class App:
 
     def __get_last_updated_time(self):
         """
-        Return the last updated time of the data source
+        Return the last updated time of the data
         """
 
         df = pd.read_csv(constants.data_dir + self.__csv_file_name, nrows=1)
