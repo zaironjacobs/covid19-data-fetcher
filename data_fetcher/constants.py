@@ -1,15 +1,11 @@
-from decouple import config
-
 csse_covid_19_daily_reports_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/' \
-                                  'csse_covid_19_data/csse_covid_19_daily_reports/{}.csv'
-
-github_api_csse_covid_19_daily_reports = 'https://api.github.com/repos/CSSEGISandData/COVID-19/commits?path=' \
-                                         'csse_covid_19_data%2Fcsse_covid_19_daily_reports%2F{}.csv'
+                                  'csse_covid_19_data/csse_covid_19_daily_reports/{}'
 
 data_dir = 'data_fetcher/data/'
 
 worldwide = 'Worldwide'
 
+last_update = 'Last_Update'
 country_region_column = 'Country_Region'
 deaths_column = 'Deaths'
 confirmed_column = 'Confirmed'

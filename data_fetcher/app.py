@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 
 from decouple import config
 import pandas as pd
-import requests
 from requests.exceptions import RequestException
 from requests.exceptions import HTTPError
 
@@ -21,7 +20,6 @@ class App:
     """
 
     def __init__(self):
-        self.__date_time_string = ''
         self.__csv_file_name = ''
 
         self.__country_objects_dict = {}
@@ -48,31 +46,35 @@ class App:
 
         print('Finished')
 
-    def _download_csv_file(self):
+    def __download(self, url):
         """
-        Download csv file
+        Download any file to the data dir
         """
 
-        def download(url, date_time_string):
-            try:
-                output_path, downloaded_file_name = retriever.download(url.format(date_time_string),
-                                                                       output_path=constants.data_dir)
-            except (OSError, HTTPError, RequestException) as err:
-                raise err
-            else:
-                return downloaded_file_name
+        try:
+            output_path, downloaded_file_name = retriever.download(url, output_path=constants.data_dir)
+        except (OSError, HTTPError, RequestException) as err:
+            raise err
+        else:
+            return downloaded_file_name
+
+    def _download_csv_file(self):
+        """
+        Download the csv file
+        """
 
         if not os.path.exists(constants.data_dir):
             os.makedirs(constants.data_dir)
         else:
             shutil.rmtree(constants.data_dir)
 
-        tries = 30
+        tries = 90
         for num in range(0, tries):
             date_time = datetime.now() - timedelta(num)
-            self.__date_time_string = datetime.strftime(date_time, '%m-%d-%Y')
+            date_time_string = datetime.strftime(date_time, '%m-%d-%Y')
             try:
-                file_name = download(constants.csse_covid_19_daily_reports_url, self.__date_time_string)
+                url = constants.csse_covid_19_daily_reports_url.format(date_time_string) + '.csv'
+                file_name = self.__download(url)
                 self.__csv_file_name = file_name
                 print('Download completed: ' + file_name)
             except (OSError, HTTPError, RequestException):
@@ -106,7 +108,7 @@ class App:
         Create country objects
         """
 
-        last_updated_by_source_at = self._get_last_updated_time()
+        last_updated_by_source_at = self.__get_last_updated_time()
 
         country_names_list = self._get_country_names_list()
 
@@ -169,14 +171,15 @@ class App:
         country_worldwide.increment_active(self.__total_active)
         country_worldwide.increment_confirmed(self.__total_confirmed)
 
-    def _get_last_updated_time(self):
+    def __get_last_updated_time(self):
         """
         Return the last updated time of the data source
         """
 
-        res = requests.get(constants.github_api_csse_covid_19_daily_reports.format(self.__date_time_string))
-        date_updated_by_source = res.json()[0]['commit']['committer']['date']
-        return datetime.strptime(date_updated_by_source, '%Y-%m-%dT%H:%M:%SZ')
+        df = pd.read_csv(constants.data_dir + self.__csv_file_name, nrows=1)
+        date_string = df.at[0, constants.last_update]
+        date = datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S')
+        return date
 
     def _save_data_to_db(self):
         """
