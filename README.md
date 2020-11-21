@@ -20,7 +20,7 @@ An example of a document:
 ```
 
 ## Dependencies
-- Python >= 3.8
+- [Python 3](https://www.python.org/downloads/)
 
 ## Download
 ```console
