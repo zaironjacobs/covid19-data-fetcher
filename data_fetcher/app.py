@@ -129,25 +129,21 @@ class App:
         df.fillna(0, inplace=True, downcast='infer')
 
         row_count = len(df.index)
+
+        def get_case_count(dataframe, column_name):
+            case = int(dataframe.at[count, column_name])
+            if case < 0:
+                case = abs(case)
+            return case
+
         for count in range(row_count):
             country_name = df.at[count, constants.country_region_column]
 
             try:
-                deaths = int(df.at[count, constants.deaths_column])
-                if deaths < 0:
-                    deaths = abs(deaths)
-
-                recovered = int(df.at[count, constants.recovered_column])
-                if recovered < 0:
-                    recovered = abs(recovered)
-
-                active = int(df.at[count, constants.active_column])
-                if active < 0:
-                    active = abs(active)
-
-                confirmed = int(df.at[count, constants.confirmed_column])
-                if confirmed < 0:
-                    confirmed = abs(confirmed)
+                deaths = get_case_count(df, constants.deaths_column)
+                recovered = get_case_count(df, constants.recovered_column)
+                active = get_case_count(df, constants.active_column)
+                confirmed = get_case_count(df, constants.confirmed_column)
             except ValueError as err:
                 print('Value error: ' + str(err))
             else:
