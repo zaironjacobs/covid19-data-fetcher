@@ -8,8 +8,8 @@ class MongoDB:
     """
 
     def __init__(self):
-        self.__cluster = MongoClient(config('CONNECTION_STRING'))
-        self.__database = self.__cluster[config('DATABASE')]
+        self.__client = MongoClient(config('CONNECTION_STRING'))
+        self.__database = self.__client[config('DATABASE')]
         self.__collection = self.__database[config('COLLECTION')]
 
     def insert(self, data):
