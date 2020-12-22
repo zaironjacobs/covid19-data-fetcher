@@ -89,6 +89,7 @@ class App:
         """
         Return a list with all country names
         """
+
         df = pd.read_csv(constants.data_dir + self.__csv_file_name)
         row_count = len(df.index)
 
