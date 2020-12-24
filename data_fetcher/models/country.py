@@ -1,4 +1,5 @@
-from . import country_db_fields as fields
+from data_fetcher import country_db_fields as fields
+import datetime
 
 
 class Country:
@@ -12,7 +13,7 @@ class Country:
         self.__deaths = 0
         self.__active = 0
         self.__recovered = 0
-        self.__last_updated_by_source_at = None
+        self.__last_updated_by_source_at = datetime.datetime.now()
 
     def increment_confirmed(self, confirmed):
         self.__confirmed += confirmed

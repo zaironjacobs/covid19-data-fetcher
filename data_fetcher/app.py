@@ -8,7 +8,7 @@ import pandas as pd
 from requests.exceptions import RequestException
 from requests.exceptions import HTTPError
 
-from .country import Country
+from .models.country import Country
 from . import constants
 from .mongodb import MongoDB
 from . import retriever
