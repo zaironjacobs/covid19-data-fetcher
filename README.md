@@ -43,3 +43,10 @@ $ cd covid19-data-fetcher-python
 $ pipenv install
 $ pipenv run python run.py
 ```
+
+## Crontab
+At minute 0 and 30:
+
+```
+0,30 * * * * cd ~/covid19-data-fetcher-python && /usr/local/bin/pipenv run python run.py
+```
