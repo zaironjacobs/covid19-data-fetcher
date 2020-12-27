@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from decouple import config
 
 
-class MongoDB:
+class MongoDatabase:
     """
     MongoDB
     """

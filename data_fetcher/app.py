@@ -10,7 +10,7 @@ from requests.exceptions import HTTPError
 
 from .models.country import Country
 from . import constants
-from .mongodb import MongoDB
+from .mongo_database import MongoDatabase
 from . import retriever
 
 
@@ -29,7 +29,7 @@ class App:
         self.__total_recovered = 0
         self.__total_active = 0
 
-        self.__mongodb = MongoDB()
+        self.__mongodb = MongoDatabase()
 
     def init(self):
         """
