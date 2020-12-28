@@ -20,6 +20,7 @@ An example of a document:
 ```
 
 ## Dependencies
+- [MongoDB](https://www.mongodb.com/)
 - [Python 3](https://www.python.org/downloads/)
 
 ## Download
