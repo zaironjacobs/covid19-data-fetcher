@@ -5,7 +5,7 @@ from pymongo import MongoClient
 from decouple import config
 
 from ..app import App
-from .. import country_db_fields as fields
+from .. import country_fields as fields
 
 cluster = MongoClient(config('CONNECTION_STRING'))
 database = cluster[config('DATABASE')]

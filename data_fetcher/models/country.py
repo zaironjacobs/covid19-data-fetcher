@@ -1,4 +1,4 @@
-from data_fetcher import country_db_fields as fields
+from data_fetcher import country_fields as fields
 import datetime
 
 
