@@ -4,7 +4,7 @@ COVID-19 Data Fetcher
 * Fetch and save data of each country to a MongoDB database. 
 * Fetch and save news related to COVID-19 to a MongoDB database.
 
-Source of data: https://github.com/CSSEGISandData/COVID-19 & [News API](https://newsapi.org/).
+Source of data: [CSSEGISandData](https://github.com/CSSEGISandData/COVID-19) & [News API](https://newsapi.org/).
 
 An example of a country document:
 ```javascript
