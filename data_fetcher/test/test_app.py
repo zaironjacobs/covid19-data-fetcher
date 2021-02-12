@@ -9,7 +9,7 @@ from .. import country_fields as fields
 
 cluster = MongoClient(config('CONNECTION_STRING'))
 database = cluster[config('DATABASE')]
-collection = database[config('COLLECTION')]
+collection = database[config('COLLECTION_COUNTRY')]
 
 
 class TestApp:
