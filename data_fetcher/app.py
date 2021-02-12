@@ -202,8 +202,7 @@ class App:
 
                 self.__news_objects_list.append(news)
         else:
-            print('Error fetching news')
-            sys.exit(0)
+            print('Error: could not fetch news')
 
     def _save_country_data_to_db(self):
         """

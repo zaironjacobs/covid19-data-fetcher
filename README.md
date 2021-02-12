@@ -41,6 +41,7 @@ An example of a news document:
 ## Dependencies
 - [MongoDB](https://www.mongodb.com/)
 - [Python 3](https://www.python.org/downloads/)
+- [News API Key](https://newsapi.org/)
 
 ## Download
 ```console
