@@ -34,7 +34,7 @@ class TestApp:
 
         test_app._create_country_objects()
         test_app._populate_country_objects()
-        test_app._save_data_to_db()
+        test_app._save_country_data_to_db()
 
         country = 'Netherlands'
         country_data = (collection.find_one({fields.name(): country}))
@@ -54,7 +54,7 @@ class TestApp:
 
         test_app._create_country_objects()
         test_app._populate_country_objects()
-        test_app._save_data_to_db()
+        test_app._save_country_data_to_db()
 
         country = 'Netherlands'
         country_data = (collection.find_one({fields.name(): country}))
@@ -74,7 +74,7 @@ class TestApp:
 
         test_app._create_country_objects()
         test_app._populate_country_objects()
-        test_app._save_data_to_db()
+        test_app._save_country_data_to_db()
 
         country = 'Netherlands'
         country_data = (collection.find_one({fields.name(): country}))
@@ -94,7 +94,7 @@ class TestApp:
 
         test_app._create_country_objects()
         test_app._populate_country_objects()
-        test_app._save_data_to_db()
+        test_app._save_country_data_to_db()
 
         country = 'Netherlands'
         country_data = (collection.find_one({fields.name(): country}))

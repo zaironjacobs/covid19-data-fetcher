@@ -1,6 +1,9 @@
 csse_covid_19_daily_reports_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/' \
                                   'csse_covid_19_data/csse_covid_19_daily_reports/{}'
 
+news_api_url = 'https://newsapi.org/v2/everything?qInTitle=covid OR corona&apiKey={}' \
+               '&language=en&sortBy=publishedAt&pageSize={}'
+
 data_dir = 'data_fetcher/data/'
 
 worldwide = 'Worldwide'

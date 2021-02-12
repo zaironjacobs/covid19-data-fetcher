@@ -3,12 +3,14 @@ import sys
 import shutil
 from datetime import datetime, timedelta
 
-from decouple import config
 import pandas as pd
+import requests
+from decouple import config
 from requests.exceptions import RequestException
 from requests.exceptions import HTTPError
 
 from .models.country import Country
+from .models.news import News
 from . import constants
 from .mongo_database import MongoDatabase
 from . import retriever
@@ -22,6 +24,7 @@ class App:
     def __init__(self):
         self.__csv_file_name = ''
 
+        self.__news_objects_list = []
         self.__country_objects_dict = {}
 
         self.__total_confirmed = 0
@@ -38,11 +41,13 @@ class App:
 
         print('Downloading data...')
         self._download_csv_file()
+        self._fetch_news()
 
         print('Saving data to database...')
         self._create_country_objects()
         self._populate_country_objects()
-        self._save_data_to_db()
+        self._save_country_data_to_db()
+        self._save_news_data_to_db()
 
         print('Finished')
 
@@ -76,7 +81,6 @@ class App:
                 url = constants.csse_covid_19_daily_reports_url.format(date_time_string) + '.csv'
                 file_name = self.__download(url)
                 self.__csv_file_name = file_name
-                print('Download completed: ' + file_name)
             except (OSError, HTTPError, RequestException):
                 pass
             else:
@@ -178,14 +182,46 @@ class App:
         date = datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S')
         return date
 
-    def _save_data_to_db(self):
+    def _fetch_news(self):
+        """
+        Fetch news and save it to a list
+        """
+
+        url = constants.news_api_url.format(config('NEWS_API_KEY'), config('NEWS_PAGE_SIZE'))
+        response = requests.get(url)
+        if response.status_code == 200:
+            size = len(response.json()['articles'])
+            for x in range(size):
+                news = News()
+                news.title = response.json()['articles'][x]['title']
+                news.source_name = response.json()['articles'][x]['source']['name']
+                news.author = response.json()['articles'][x]['author']
+                news.description = response.json()['articles'][x]['description']
+                news.url = response.json()['articles'][x]['url']
+                news.published_at = response.json()['articles'][x]['publishedAt']
+
+                self.__news_objects_list.append(news)
+        else:
+            print('Error fetching news')
+            sys.exit(0)
+
+    def _save_country_data_to_db(self):
         """
         Save each country object to a MongoDB database
         """
 
-        self.__mongodb.drop_collection(config('COLLECTION'))
+        self.__mongodb.drop_collection(config('COLLECTION_COUNTRY'))
         for key, value in self.__country_objects_dict.items():
-            self.__mongodb.insert(value.to_dict())
+            self.__mongodb.insert_country(value.to_dict())
+
+    def _save_news_data_to_db(self):
+        """
+        Save each news object to a MongoDB database
+        """
+
+        self.__mongodb.drop_collection(config('COLLECTION_NEWS'))
+        for news in self.__news_objects_list:
+            self.__mongodb.insert_news(news.to_dict())
 
     @property
     def csv_file_name(self):

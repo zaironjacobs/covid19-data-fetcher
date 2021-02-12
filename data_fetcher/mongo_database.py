@@ -10,14 +10,22 @@ class MongoDatabase:
     def __init__(self):
         self.__client = MongoClient(config('CONNECTION_STRING'))
         self.__database = self.__client[config('DATABASE')]
-        self.__collection = self.__database[config('COLLECTION')]
+        self.__collection_country = self.__database[config('COLLECTION_COUNTRY')]
+        self.__collection_news = self.__database[config('COLLECTION_NEWS')]
 
-    def insert(self, data):
+    def insert_country(self, data):
         """
         Insert data to MongoDB
         """
 
-        self.__collection.insert_one(data)
+        self.__collection_country.insert_one(data)
+
+    def insert_news(self, data):
+        """
+        Insert data to MongoDB
+        """
+
+        self.__collection_news.insert_one(data)
 
     def drop_collection(self, collection_name):
         """
