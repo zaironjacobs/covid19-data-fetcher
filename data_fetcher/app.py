@@ -194,15 +194,35 @@ class App:
             for x in range(size):
                 news = News()
 
-                news.title = response.json()['articles'][x]['title']
+                if response.json()['articles'][x]['title'] is None:
+                    title = '-'
+                else:
+                    title = response.json()['articles'][x]['title']
+                news.title = title
 
-                news.source_name = response.json()['articles'][x]['source']['name']
+                if response.json()['articles'][x]['source']['name'] is None:
+                    source_name = '-'
+                else:
+                    source_name = response.json()['articles'][x]['source']['name']
+                news.source_name = source_name
 
-                news.author = response.json()['articles'][x]['author']
+                if response.json()['articles'][x]['author'] is None:
+                    author = '-'
+                else:
+                    author = response.json()['articles'][x]['author']
+                news.author = author
 
-                news.description = response.json()['articles'][x]['description']
+                if response.json()['articles'][x]['description'] is None:
+                    description = '-'
+                else:
+                    description = response.json()['articles'][x]['description']
+                news.description = description
 
-                news.url = response.json()['articles'][x]['url']
+                if response.json()['articles'][x]['url'] is None:
+                    url = '-'
+                else:
+                    url = response.json()['articles'][x]['url']
+                news.url = url
 
                 date_string = response.json()['articles'][x]['publishedAt']
                 date = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
