@@ -193,12 +193,20 @@ class App:
             size = len(response.json()['articles'])
             for x in range(size):
                 news = News()
+
                 news.title = response.json()['articles'][x]['title']
+
                 news.source_name = response.json()['articles'][x]['source']['name']
+
                 news.author = response.json()['articles'][x]['author']
+
                 news.description = response.json()['articles'][x]['description']
+
                 news.url = response.json()['articles'][x]['url']
-                news.published_at = response.json()['articles'][x]['publishedAt']
+
+                date_string = response.json()['articles'][x]['publishedAt']
+                date = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
+                news.published_at = date
 
                 self.__news_objects_list.append(news)
         else:
