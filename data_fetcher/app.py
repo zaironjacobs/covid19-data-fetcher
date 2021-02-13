@@ -194,33 +194,28 @@ class App:
             for x in range(size):
                 news = News()
 
-                if response.json()['articles'][x]['title'] is None:
-                    title = '-'
-                else:
+                title = '-'
+                if response.json()['articles'][x]['title'] is not None:
                     title = response.json()['articles'][x]['title']
                 news.title = title
 
-                if response.json()['articles'][x]['source']['name'] is None:
-                    source_name = '-'
-                else:
+                source_name = '-'
+                if response.json()['articles'][x]['source']['name'] is not None:
                     source_name = response.json()['articles'][x]['source']['name']
                 news.source_name = source_name
 
-                if response.json()['articles'][x]['author'] is None:
-                    author = '-'
-                else:
+                author = '-'
+                if response.json()['articles'][x]['author'] is not None:
                     author = response.json()['articles'][x]['author']
                 news.author = author
 
-                if response.json()['articles'][x]['description'] is None:
-                    description = '-'
-                else:
+                description = '-'
+                if response.json()['articles'][x]['description'] is not None:
                     description = response.json()['articles'][x]['description']
                 news.description = description
 
-                if response.json()['articles'][x]['url'] is None:
-                    url = '-'
-                else:
+                url = '-'
+                if response.json()['articles'][x]['url'] is not None:
                     url = response.json()['articles'][x]['url']
                 news.url = url
 
