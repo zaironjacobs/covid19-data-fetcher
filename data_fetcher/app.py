@@ -18,7 +18,8 @@ from . import retriever
 
 class App:
     """
-    Save data from the downloaded csv file inside the data dir to a MongoDB database
+    Fetch and save data of each country to a MongoDB database.
+    Fetch and save news related to COVID-19 to a MongoDB database.
     """
 
     def __init__(self):
