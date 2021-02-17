@@ -10,7 +10,7 @@ from requests.exceptions import RequestException
 from requests.exceptions import HTTPError
 
 from .models.country import Country
-from .models.news import News
+from .models.article import Article
 from . import constants
 from .mongo_database import MongoDatabase
 from . import retriever
@@ -19,13 +19,13 @@ from . import retriever
 class App:
     """
     Fetch and save data of each country to a MongoDB database.
-    Fetch and save news related to COVID-19 to a MongoDB database.
+    Fetch and save articles related to COVID-19 to a MongoDB database.
     """
 
     def __init__(self):
         self.__csv_file_name = ''
 
-        self.__news_objects_list = []
+        self.__article_objects_list = []
         self.__country_objects_dict = {}
 
         self.__total_confirmed = 0
@@ -42,13 +42,13 @@ class App:
 
         print('Downloading data...')
         self._download_csv_file()
-        self._fetch_news()
+        self._fetch_articles()
 
         print('Saving data to database...')
         self._create_country_objects()
         self._populate_country_objects()
         self._save_country_data_to_db()
-        self._save_news_data_to_db()
+        self._save_article_data_to_db()
 
         print('Finished')
 
@@ -183,9 +183,9 @@ class App:
         date = datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S')
         return date
 
-    def _fetch_news(self):
+    def _fetch_articles(self):
         """
-        Fetch news and save it to a list
+        Fetch articles and save them to a list
         """
 
         url = constants.news_api_url.format(config('NEWS_API_KEY'), config('NEWS_PAGE_SIZE'))
@@ -193,40 +193,40 @@ class App:
         if response.status_code == 200:
             size = len(response.json()['articles'])
             for x in range(size):
-                news = News()
+                article = Article()
 
                 title = '-'
                 if response.json()['articles'][x]['title'] is not None:
                     title = response.json()['articles'][x]['title']
-                news.title = title
+                article.title = title
 
                 source_name = '-'
                 if response.json()['articles'][x]['source']['name'] is not None:
                     source_name = response.json()['articles'][x]['source']['name']
-                news.source_name = source_name
+                article.source_name = source_name
 
                 author = '-'
                 if response.json()['articles'][x]['author'] is not None:
                     author = response.json()['articles'][x]['author']
-                news.author = author
+                article.author = author
 
                 description = '-'
                 if response.json()['articles'][x]['description'] is not None:
                     description = response.json()['articles'][x]['description']
-                news.description = description
+                article.description = description
 
                 url = '-'
                 if response.json()['articles'][x]['url'] is not None:
                     url = response.json()['articles'][x]['url']
-                news.url = url
+                article.url = url
 
                 date_string = response.json()['articles'][x]['publishedAt']
                 date = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-                news.published_at = date
+                article.published_at = date
 
-                self.__news_objects_list.append(news)
+                self.__article_objects_list.append(article)
         else:
-            print('Error: could not fetch news')
+            print('Error: could not fetch article')
 
     def _save_country_data_to_db(self):
         """
@@ -237,14 +237,14 @@ class App:
         for key, value in self.__country_objects_dict.items():
             self.__mongodb.insert_country(value.to_dict())
 
-    def _save_news_data_to_db(self):
+    def _save_article_data_to_db(self):
         """
-        Save each news object to a MongoDB database
+        Save each article object to a MongoDB database
         """
 
-        self.__mongodb.drop_collection(config('COLLECTION_NEWS'))
-        for news in self.__news_objects_list:
-            self.__mongodb.insert_news(news.to_dict())
+        self.__mongodb.drop_collection(config('COLLECTION_ARTICLE'))
+        for article in self.__article_objects_list:
+            self.__mongodb.insert_article(article.to_dict())
 
     @property
     def csv_file_name(self):

@@ -1,10 +1,10 @@
-from data_fetcher import news_fields as fields
+from data_fetcher import article_fields as fields
 import datetime
 
 
-class News:
+class Article:
     """
-    News class to store news data
+    Article class to store article data
     """
 
     def __init__(self):
