@@ -181,7 +181,11 @@ class App:
         df = pd.read_csv(constants.data_dir + self.__csv_file_name, nrows=1)
         date_string = df.at[0, constants.last_update]
         date = datetime.strptime(date_string, '%Y-%m-%d %H:%M:%S')
-        return date
+
+        # Add UTC to time
+        date_utc = date.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+        return date_utc
 
     def _fetch_articles(self):
         """
@@ -222,7 +226,11 @@ class App:
 
                 date_string = response.json()['articles'][x]['publishedAt']
                 date = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-                article.published_at = date
+
+                # Add UTC to time
+                date_utc = date.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+                article.published_at = date_utc
 
                 self.__article_objects_list.append(article)
         else:
