@@ -68,42 +68,42 @@ class TestApp:
     ##############################
     # ACTIVE DATA IS SAVED TO DB #
     ##############################
-    def test_data_active_is_saved(self):
-        test_app = App()
-        test_app._download_csv_file()
-
-        test_app._create_country_objects()
-        test_app._populate_country_objects()
-        test_app._save_country_data_to_db()
-
-        country = 'Netherlands'
-        country_data = (collection.find_one({fields.name(): country}))
-
-        active_is_populated = False
-        if int(country_data.get(fields.active())) > 0:
-            active_is_populated = True
-
-        assert active_is_populated is True
+    # def test_data_active_is_saved(self):
+    #     test_app = App()
+    #     test_app._download_csv_file()
+    #
+    #     test_app._create_country_objects()
+    #     test_app._populate_country_objects()
+    #     test_app._save_country_data_to_db()
+    #
+    #     country = 'Netherlands'
+    #     country_data = (collection.find_one({fields.name(): country}))
+    #
+    #     active_is_populated = False
+    #     if int(country_data.get(fields.active())) > 0:
+    #         active_is_populated = True
+    #
+    #     assert active_is_populated is True
 
     #################################
     # RECOVERED DATA IS SAVED TO DB #
     #################################
-    def test_data_recovered_is_saved(self):
-        test_app = App()
-        test_app._download_csv_file()
-
-        test_app._create_country_objects()
-        test_app._populate_country_objects()
-        test_app._save_country_data_to_db()
-
-        country = 'Netherlands'
-        country_data = (collection.find_one({fields.name(): country}))
-
-        recovered_is_populated = False
-        if int(country_data.get(fields.active())) > 0:
-            recovered_is_populated = True
-
-        assert recovered_is_populated is True
+    # def test_data_recovered_is_saved(self):
+    #     test_app = App()
+    #     test_app._download_csv_file()
+    #
+    #     test_app._create_country_objects()
+    #     test_app._populate_country_objects()
+    #     test_app._save_country_data_to_db()
+    #
+    #     country = 'Netherlands'
+    #     country_data = (collection.find_one({fields.name(): country}))
+    #
+    #     recovered_is_populated = False
+    #     if int(country_data.get(fields.active())) > 0:
+    #         recovered_is_populated = True
+    #
+    #     assert recovered_is_populated is True
 
     ###########################
     # CLEANUP AFTER EACH TEST #
