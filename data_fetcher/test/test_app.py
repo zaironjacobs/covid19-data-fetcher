@@ -1,15 +1,20 @@
 import os
+import configparser
 
 import pytest
 from pymongo import MongoClient
-from decouple import config
 
 from ..app import App
 from .. import country_fields as fields
 
-cluster = MongoClient(config('CONNECTION_STRING'))
-database = cluster[config('DATABASE')]
-collection = database[config('COLLECTION_COUNTRY')]
+# Read config file
+config = configparser.RawConfigParser()
+config.read('config.ini')
+
+# Get configs and setup database
+cluster = MongoClient(config['DEFAULT']['connection_string'])
+database = cluster[config['DEFAULT']['database']]
+collection = database[config['DEFAULT']['collection_country']]
 
 
 class TestApp:
