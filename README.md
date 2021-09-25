@@ -1,12 +1,46 @@
 COVID-19 Data Fetcher
 =================
 
-* Fetch and save data of each country to a MongoDB database. 
+* Fetch and save data of each country to a MongoDB database.
 * Fetch and save articles related to COVID-19 to a MongoDB database.
 
 Source of data: [CSSEGISandData](https://github.com/CSSEGISandData/COVID-19) & [News API](https://newsapi.org/).
 
+## Dependencies
+
+- [MongoDB](https://www.mongodb.com/)
+- [Python 3](https://www.python.org/downloads/)
+- [News API Key](https://newsapi.org/)
+
+## Download
+
+```console
+$ git clone https://github.com/zaironjacobs/covid19-data-fetcher
+```
+
+## Usage
+
+Copy the file config-example.ini to config.ini and fill in the environment variables. A local connection example:
+
+```
+database = covid19
+collection_country = country
+collection_article = article
+connection_string = mongodb://localhost:27017
+news_api_key = 1234567890
+news_page_size = 5
+```
+
+To use:
+
+```console
+$ cd covid19-data-fetcher
+$ pipenv install
+$ pipenv run python run.py
+```
+
 An example of a country document:
+
 ```javascript
 {
     "_id": {
@@ -24,6 +58,7 @@ An example of a country document:
 ```
 
 An example of an article document:
+
 ```javascript
 {
     "_id": {
@@ -38,37 +73,10 @@ An example of an article document:
 }
 ```
 
-## Dependencies
-- [MongoDB](https://www.mongodb.com/)
-- [Python 3](https://www.python.org/downloads/)
-- [News API Key](https://newsapi.org/)
-
-## Download
-```console
-$ git clone https://github.com/zaironjacobs/covid19-data-fetcher
-```
-
-## Usage
-Copy the file .env.example to .env and fill in the environment variables.
-A local connection example:
-```
-DATABASE=covid19
-COLLECTION_COUNTRY=country
-COLLECTION_ARTICLE=article
-CONNECTION_STRING=mongodb://localhost:27017
-NEWS_API_KEY=1234567890abcdefghijk
-NEWS_PAGE_SIZE=5
-```
-
-To use:
-```console
-$ cd covid19-data-fetcher
-$ pipenv install
-$ pipenv run python run.py
-```
-
 ## Crontab
+
 At minute 0 and 30:
+
 ```
 0,30 * * * * cd ~/covid19-data-fetcher && /usr/local/bin/pipenv run python run.py
 ```

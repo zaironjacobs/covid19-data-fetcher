@@ -1,11 +1,11 @@
 import os
 import sys
+import configparser
 import shutil
 from datetime import datetime, timedelta
 
 import pandas as pd
 import requests
-from decouple import config
 from requests.exceptions import RequestException
 from requests.exceptions import HTTPError
 
@@ -14,6 +14,16 @@ from .models.article import Article
 from . import constants
 from .mongo_database import MongoDatabase
 from . import retriever
+
+# Read config file
+config = configparser.RawConfigParser()
+config.read('config.ini')
+
+# Get configs
+collection_country = config['DEFAULT']['collection_country']
+collection_article = config['DEFAULT']['collection_article']
+news_api_key = config['DEFAULT']['news_api_key']
+news_page_size = config['DEFAULT']['news_page_size']
 
 
 class App:
@@ -192,7 +202,7 @@ class App:
         Fetch articles and save them to a list
         """
 
-        url = constants.news_api_url.format(config('NEWS_API_KEY'), config('NEWS_PAGE_SIZE'))
+        url = constants.news_api_url.format(news_api_key, news_page_size)
         response = requests.get(url)
         if response.status_code == 200:
             size = len(response.json()['articles'])
@@ -234,14 +244,14 @@ class App:
 
                 self.__article_objects_list.append(article)
         else:
-            print('Error: could not fetch article')
+            print('Error: could not fetch articles')
 
     def _save_country_data_to_db(self):
         """
         Save each country object to a MongoDB database
         """
 
-        self.__mongodb.drop_collection(config('COLLECTION_COUNTRY'))
+        self.__mongodb.drop_collection(collection_country)
         for key, value in self.__country_objects_dict.items():
             self.__mongodb.insert_country(value.to_dict())
 
@@ -250,7 +260,7 @@ class App:
         Save each article object to a MongoDB database
         """
 
-        self.__mongodb.drop_collection(config('COLLECTION_ARTICLE'))
+        self.__mongodb.drop_collection(collection_article)
         for article in self.__article_objects_list:
             self.__mongodb.insert_article(article.to_dict())
 

@@ -1,5 +1,15 @@
 from pymongo import MongoClient
-from decouple import config
+import configparser
+
+# Read config file
+config = configparser.RawConfigParser()
+config.read('config.ini')
+
+# Get configs
+database = config['DEFAULT']['database']
+collection_country = config['DEFAULT']['collection_country']
+collection_article = config['DEFAULT']['collection_article']
+connection_string = config['DEFAULT']['connection_string']
 
 
 class MongoDatabase:
@@ -8,10 +18,10 @@ class MongoDatabase:
     """
 
     def __init__(self):
-        self.__client = MongoClient(config('CONNECTION_STRING'))
-        self.__database = self.__client[config('DATABASE')]
-        self.__collection_country = self.__database[config('COLLECTION_COUNTRY')]
-        self.__collection_articles = self.__database[config('COLLECTION_ARTICLE')]
+        self.__client = MongoClient(connection_string)
+        self.__database = self.__client[database]
+        self.__collection_country = self.__database[collection_country]
+        self.__collection_articles = self.__database[collection_article]
 
     def insert_country(self, data):
         """
