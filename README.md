@@ -77,5 +77,5 @@ An example of an article document:
 At minute 0 and 30:
 
 ```
-0,30 * * * * cd ~/covid19-data-fetcher && /usr/local/bin/pipenv run python run.py
+0,30 * * * * cd ~/covid19-data-fetcher && /usr/local/bin/pipenv run python fetcher.py
 ```
