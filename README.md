@@ -34,9 +34,8 @@ news_page_size = 5
 To use:
 
 ```console
-$ cd covid19-data-fetcher
 $ pipenv install
-$ pipenv run python run.py
+$ pipenv run python fetcher.py
 ```
 
 An example of a country document:
