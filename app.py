@@ -52,7 +52,6 @@ class App:
                 with open(covid19_data_csv, 'wb') as file:
                     file.write(response.content)
                     return
-            continue
         else:
             print(f'Unable to find the latest csv file for the last {str(try_count)} days.')
             sys.exit(0)
