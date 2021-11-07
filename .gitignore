@@ -153,4 +153,8 @@ data_fetcher/data
 # Config
 config.ini
 
+# Data
+data/*
+!data/.gitkeep
+
 

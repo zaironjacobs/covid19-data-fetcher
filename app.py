@@ -21,7 +21,7 @@ headers = {
 covid19_data_csv = os.path.join(os.path.dirname(__file__), 'data', 'data.csv')
 
 
-class Fetcher:
+class App:
     """
     Fetch and save data of each country to a MongoDB database.
     Fetch and save articles related to COVID-19 to a MongoDB database.
@@ -29,11 +29,14 @@ class Fetcher:
 
     def __init__(self):
         self.__mongodb = MongoDatabase()
+        print('Downloading data...')
         self._download_csv()
         countries = self._create_country_models()
-        self._save_countries_to_db(countries)
         articles = self._create_article_models()
+        print('Saving data to database...')
+        self._save_countries_to_db(countries)
         self._save_article_data_to_db(articles)
+        print('Finished')
 
     def _download_csv(self):
         """ Download the csv file """
@@ -169,7 +172,3 @@ class Fetcher:
         self.__mongodb.drop_collection(collection_article)
         for article in articles:
             self.__mongodb.insert_article(article.dict())
-
-
-if __name__ == '__main__':
-    Fetcher()

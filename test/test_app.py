@@ -4,7 +4,7 @@ import configparser
 import pytest
 from pymongo import MongoClient
 
-from fetcher import Fetcher
+from app import App
 
 # Read config file
 config = configparser.RawConfigParser()
@@ -24,7 +24,7 @@ class TestApp:
     # FILES DOWNLOADED #
     ####################
     def test_file_downloaded(self):
-        fetcher = Fetcher()
+        fetcher = App()
         fetcher._download_csv()
 
         files_exists = os.path.isfile(covid19_data_csv)
@@ -35,7 +35,7 @@ class TestApp:
     # CONFIRMED DATA IS SAVED TO DB #
     #################################
     def test_data_confirmed_is_saved(self):
-        fetcher = Fetcher()
+        fetcher = App()
         fetcher._download_csv()
 
         countries = fetcher._create_country_models()
@@ -55,7 +55,7 @@ class TestApp:
     # DEATHS DATA IS SAVED TO DB #
     ##############################
     def test_data_deaths_is_saved(self):
-        fetcher = Fetcher()
+        fetcher = App()
         fetcher._download_csv()
 
         countries = fetcher._create_country_models()
