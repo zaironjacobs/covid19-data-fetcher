@@ -10,7 +10,6 @@ from models import Country
 from models import Article
 from mongo_database import MongoDatabase
 
-# Read config file
 config = configparser.RawConfigParser()
 config.read('config.ini')
 
@@ -171,3 +170,7 @@ class App:
         self.__mongodb.drop_collection(collection_article)
         for article in articles:
             self.__mongodb.insert_article(article.dict())
+
+
+if __name__ == '__main__':
+    App()
