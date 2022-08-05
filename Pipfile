@@ -12,7 +12,7 @@ urllib3 = "*"
 pymongo = "*"
 dnspython = "*"
 pandas = "*"
-numpy = "==1.19.3"
+numpy = ">=1.22"
 pydantic = "*"
 
 [requires]
