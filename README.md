@@ -15,7 +15,7 @@ Source of data: [CSSEGISandData](https://github.com/CSSEGISandData/COVID-19) & [
 ## Download
 
 ```console
-$ git clone https://github.com/zaironjacobs/covid19-data-fetcher
+git clone https://github.com/zaironjacobs/covid19-data-fetcher
 ```
 
 ## Usage
@@ -34,8 +34,8 @@ news_page_size = 5
 To use:
 
 ```console
-$ pipenv install
-$ pipenv run python app.py
+pipenv install
+pipenv run python app.py
 ```
 
 An example of a country document:
