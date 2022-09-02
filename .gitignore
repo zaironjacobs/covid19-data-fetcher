@@ -147,9 +147,6 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-# Data
-data_fetcher/data
-
 # Config
 config.ini
 
