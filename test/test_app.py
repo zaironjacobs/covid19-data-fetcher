@@ -19,10 +19,6 @@ covid19_data_csv = os.path.join(os.path.dirname(__file__), '..', 'data', 'data.c
 
 
 class TestApp:
-
-    ####################
-    # FILES DOWNLOADED #
-    ####################
     def test_file_downloaded(self):
         fetcher = App()
         fetcher._download_csv()
@@ -31,9 +27,6 @@ class TestApp:
 
         assert files_exists is True
 
-    #################################
-    # CONFIRMED DATA IS SAVED TO DB #
-    #################################
     def test_data_confirmed_is_saved(self):
         fetcher = App()
         fetcher._download_csv()
@@ -51,9 +44,6 @@ class TestApp:
 
         assert confirmed_is_populated is True
 
-    ##############################
-    # DEATHS DATA IS SAVED TO DB #
-    ##############################
     def test_data_deaths_is_saved(self):
         fetcher = App()
         fetcher._download_csv()
@@ -71,9 +61,6 @@ class TestApp:
 
         assert deaths_is_populated is True
 
-    ###########################
-    # CLEANUP AFTER EACH TEST #
-    ###########################
     @pytest.fixture(autouse=True)
     def cleanup(self):
         yield

@@ -9,33 +9,14 @@ Source of data: [CSSEGISandData](https://github.com/CSSEGISandData/COVID-19) & [
 ## Dependencies
 
 - [MongoDB](https://www.mongodb.com/)
-- [Python 3](https://www.python.org/downloads/)
-- [News API Key](https://newsapi.org/)
 
-## Download
+## Install & run
 
-```console
-git clone https://github.com/zaironjacobs/covid19-data-fetcher
-```
-
-## Usage
-
-Copy the file config-example.ini to config.ini and fill in the environment variables. A local connection example:
-
-```
-database = covid19
-collection_country = country
-collection_article = article
-connection_string = mongodb://localhost:27017
-news_api_key = 1234567890
-news_page_size = 5
-```
-
-To use:
+Copy the file config.ini.example to config.ini and fill in the environment variables.
 
 ```console
-pipenv install
-pipenv run python app.py
+pip install -r requirements.txt
+python app.py
 ```
 
 An example of a country document:
@@ -48,8 +29,6 @@ An example of a country document:
     "name": "Netherlands",
     "confirmed": 1027023,
     "deaths": 14710,
-    "active": 998836,
-    "recovered": 13477,
     "last_updated_by_source_at": {
         "$date": "2021-02-11T05:23:55.000Z"
     }

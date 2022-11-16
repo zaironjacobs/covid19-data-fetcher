@@ -8,7 +8,7 @@ import requests
 
 from models import Country
 from models import Article
-from mongo_database import MongoDatabase
+from mongo_db import MongoDatabase
 
 config = configparser.RawConfigParser()
 config.read('config.ini')
@@ -60,20 +60,16 @@ class App:
 
         total_confirmed = 0
         total_deaths = 0
-        total_recovered = 0
-        total_active = 0
 
         last_update_col = 'Last_Update'
         country_region_col = 'Country_Region'
         deaths_col = 'Deaths'
         confirmed_col = 'Confirmed'
-        recovered_col = 'Recovered'
-        active_col = 'Active'
 
         countries = []
 
         df = pd.read_csv(covid19_data_csv)
-        df = df[[country_region_col, last_update_col, confirmed_col, deaths_col, recovered_col, active_col]]
+        df = df[[country_region_col, last_update_col, confirmed_col, deaths_col]]
 
         last_updated_by_source_at_val = df.iloc[0][last_update_col]
         last_updated_by_source_at_val = datetime.strptime(last_updated_by_source_at_val, '%Y-%m-%d %H:%M:%S')
@@ -84,27 +80,19 @@ class App:
             name_val = country.iloc[0][country_region_col]
             confirmed_val = country[confirmed_col].sum()
             deaths_val = country[deaths_col].sum()
-            active_val = country[active_col].sum()
-            recovered_val = country[recovered_col].sum()
 
             total_confirmed += confirmed_val
-            total_active += active_val
             total_deaths += deaths_val
-            total_recovered += recovered_val
 
             country = Country(name=name_val,
                               confirmed=confirmed_val,
                               deaths=deaths_val,
-                              active=active_val,
-                              recovered=recovered_val,
                               last_updated_by_source_at=last_updated_by_source_at_val)
             countries.append(country)
 
         worldwide = Country(name='Worldwide',
                             confirmed=total_confirmed,
                             deaths=total_deaths,
-                            active=total_active,
-                            recovered=total_recovered,
                             last_updated_by_source_at=last_updated_by_source_at_val)
         countries.append(worldwide)
 
@@ -153,9 +141,10 @@ class App:
                                   url=url_val,
                                   published_at=date_utc)
                 articles.append(article)
+
         return articles
 
-    def _save_countries_to_db(self, countries):
+    def _save_countries_to_db(self, countries: list[Country]):
         """ Save each country object to a MongoDB database """
 
         collection_country = config['DEFAULT']['collection_country']
@@ -163,7 +152,7 @@ class App:
         for country in countries:
             self.__mongodb.insert_country(country.dict())
 
-    def _save_article_data_to_db(self, articles):
+    def _save_article_data_to_db(self, articles: list[Article]):
         """ Save each article object to a MongoDB database """
 
         collection_article = config['DEFAULT']['collection_article']
