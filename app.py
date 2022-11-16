@@ -2,6 +2,7 @@ import os
 import sys
 import configparser
 from datetime import datetime, timedelta
+from typing import List
 
 import pandas as pd
 import requests
@@ -55,7 +56,7 @@ class App:
             print(f'Unable to find the latest csv file for the last {str(try_count)} days.')
             sys.exit(0)
 
-    def _create_country_models(self) -> list:
+    def _create_country_models(self) -> List:
         """ Create country models """
 
         total_confirmed = 0
@@ -98,7 +99,7 @@ class App:
 
         return countries
 
-    def _create_article_models(self) -> list:
+    def _create_article_models(self) -> List:
         """ Fetch articles and create article models """
 
         articles = []
@@ -144,7 +145,7 @@ class App:
 
         return articles
 
-    def _save_countries_to_db(self, countries: list[Country]):
+    def _save_countries_to_db(self, countries: List[Country]):
         """ Save each country object to a MongoDB database """
 
         collection_country = config['DEFAULT']['collection_country']
@@ -152,7 +153,7 @@ class App:
         for country in countries:
             self.__mongodb.insert_country(country.dict())
 
-    def _save_article_data_to_db(self, articles: list[Article]):
+    def _save_article_data_to_db(self, articles: List[Article]):
         """ Save each article object to a MongoDB database """
 
         collection_article = config['DEFAULT']['collection_article']
