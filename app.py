@@ -14,6 +14,11 @@ from mongo_db import MongoDatabase
 config = configparser.RawConfigParser()
 config.read('config.ini')
 
+collection_country = config['DEFAULT']['collection_country']
+collection_article = config['DEFAULT']['collection_article']
+news_api_key = config['DEFAULT']['news_api_key']
+news_page_size = config['DEFAULT']['news_page_size']
+
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'
 }
@@ -103,8 +108,6 @@ class App:
         """ Fetch articles and create article models """
 
         articles = []
-        news_api_key = config['DEFAULT']['news_api_key']
-        news_page_size = config['DEFAULT']['news_page_size']
         url = f'https://newsapi.org/v2/everything?qInTitle=covid OR corona&apiKey={news_api_key}' \
               f'&language=en&sortBy=publishedAt&pageSize={news_page_size}'
         response = requests.get(url, headers=headers)
@@ -148,7 +151,6 @@ class App:
     def _save_countries_to_db(self, countries: List[Country]):
         """ Save each country object to a MongoDB database """
 
-        collection_country = config['DEFAULT']['collection_country']
         self.__mongodb.drop_collection(collection_country)
         for country in countries:
             self.__mongodb.insert_country(country.dict())
@@ -156,7 +158,6 @@ class App:
     def _save_article_data_to_db(self, articles: List[Article]):
         """ Save each article object to a MongoDB database """
 
-        collection_article = config['DEFAULT']['collection_article']
         self.__mongodb.drop_collection(collection_article)
         for article in articles:
             self.__mongodb.insert_article(article.dict())
