@@ -1,6 +1,11 @@
 COVID-19 Data Fetcher
 =================
 
+**Message from https://github.com/CSSEGISandData/COVID-19:**
+
+**On March 10, 2023, the Johns Hopkins Coronavirus Resource Center ceased its collecting and reporting of global
+COVID-19 data.**
+
 * Fetch and save data of each country to a MongoDB database.
 * Fetch and save articles related to COVID-19 to a MongoDB database.
 
